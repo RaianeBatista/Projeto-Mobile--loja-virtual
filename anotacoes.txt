@@ -1,0 +1,39 @@
+Para criar um novo projeto:
+npx create-expo-app --template blank-typescript
+
+Iniciando o projeto Expo no modo web para rodar o app no navegador:
+npx expo start --web
+
+Instalando dependências necessárias para rodar o projeto Expo no navegador.
+npx expo install react-dom react-native-web @expo/metro-runtime
+
+npx expo-doctor = ele vai analisar todo o projeto
+
+npx expo install --check = faz as devidas correções
+
+Arquitetura do Projeto 
+Stack:
+-Index
+    -(tabs)
+        -Início
+        -Stack Categorias
+            -Listagem de categorias
+            -Listagem de produtos de UMA categoria
+        -Sobre mim
+-Produto Único
+
+Instalando o Expo Router
+npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
+
+Alterar o package.josn, na main:
+  "main": "index.ts",
+para:
+  {
+  "main": "expo-router/entry"
+}
+Mais informações clique aqui:
+https://docs.expo.dev/router/installation/
+
+
+Para executar
+npx expo start --clear
