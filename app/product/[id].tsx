@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
   },
   buttonArea: {
     padding: 10,
-    borderRadius: 10
+    borderRadius: 10,
+    marginBottom: 50
   },
   img: {
     width: "100%",
