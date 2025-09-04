@@ -1,6 +1,8 @@
 Para criar um novo projeto:
 npx create-expo-app --template blank-typescript
 
+Usa-se também para rodar o projeto, npm start
+
 Iniciando o projeto Expo no modo web para rodar o app no navegador:
 npx expo start --web
 
@@ -37,3 +39,151 @@ https://docs.expo.dev/router/installation/
 
 Para executar
 npx expo start --clear
+
+Módulo React native Intermediário
+StackNavigator
+TabNavigator
+
+No link: https://docs.expo.dev/router/advanced/drawer/
+DrawerNavigator, use esse comando: 
+npx expo install @react-navigation/drawer react-native-gesture-handler react-native-reanimated
+
+GestureHandlerRootView - essa bibliotexca vai gerir as passadas de dedos, gestos com a mão
+
+ <Drawer.Screen name="index" options={{ title: "Tela Inicial" }} />
+ Ou:
+  <Drawer.Screen name="index" options={{ drawerLabel: 'Início', headerTitle: 'Home'}} />
+
+
+
+  import { Drawer } from "expo-router/drawer";
+import { View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+export default function RootLayout() {
+  return (
+    <GestureHandlerRootView>
+      <Drawer
+        screenOptions={{
+          drawerPosition: "right",
+          drawerType: "front",
+          drawerActiveTintColor:'#B0E0E6',
+           drawerActiveBackgroundColor: '#FF00FF',
+          drawerInactiveTintColor: '#4B0082',
+          drawerInactiveBackgroundColor: '#9370DB',
+          drawerContentStyle: {
+            // backgroundColor: '#663399'
+          },
+          drawerContentContainerStyle:{
+            backgroundColor: '#7B68EE'
+          },
+          drawerStyle:{
+            backgroundColor:'#BC8F8F',
+            width: 200
+          }
+        }}
+      >
+        <Drawer.Screen
+          name="index"
+          options={{
+            title: "Home",
+            drawerIcon: ({ color, size }) => (
+              <View
+                style={{ width: size, height: size, backgroundColor: color }}
+              ></View>
+            ),
+          }}
+        />
+
+        <Drawer.Screen
+          name="about"
+          options={{
+            title: "Sobre o App",
+            drawerIcon: ({ color, size }) => (
+              <View
+                style={{ width: size, height: size, backgroundColor: color, borderRadius:12 }}
+              ></View>
+            ),
+          }}
+        />
+      </Drawer>
+    </GestureHandlerRootView>
+  );
+}
+
+Passar parâmetros entre telas
+Query String, quando se passa informações, no endereço da rota
+site.com
+site.com/about
+site.com/about?name=raiane&age=20 => Ordena a rota por nome e idade
+site.com/products?order=bestselling => ordena essa rota pelos produtos mais vendidios
+site.com/products?order=price => ordena a rota por preco dos produtos
+
+
+Significa que o type name é opcional e é do tipo strig:
+type Query ={
+  name?: string;
+}
+
+import { router } from "expo-router";
+import { View, StyleSheet, Text, Button } from "react-native";
+
+export default function Screen() {
+  const handleButton = () => {
+    const params = new URLSearchParams();
+    params.set("name", "Berenice");
+    params.set("age", "36");
+    router.push(`/about?${params.toString()}`);
+    // router.push("/about?name=raiane&age=36");
+  };
+  return (
+    <View style={styles.container}>
+      <Text style={styles.h1}>Tela Inicial</Text>
+
+      <Button title="Ir para Sobre (com params)" onPress={handleButton} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  h1: {
+    fontSize: 22,
+  },
+});
+
+
+
+about.tsx
+import { useLocalSearchParams } from "expo-router";
+import { StyleSheet, Text, View } from "react-native";
+
+type Query = {
+  name?: string;
+  age?: string;
+};
+
+export default function Screen() {
+  const { name, age } = useLocalSearchParams<Query>();
+
+  return (
+    <View style={styles.container}>
+      <Text>
+        Sobre o app: {name} - {age}
+      </Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+

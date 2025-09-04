@@ -1,11 +1,16 @@
-import { Stack } from "expo-router";
+import { Drawer } from "expo-router/drawer";
+import { View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { CustomDrawer } from "../components/custom-drawer";
 
 export default function RootLayout() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="(tabs)" options={{ title: "Produtos" }} />
-      <Stack.Screen name="product/[id]" options={{ headerShown: true }} />
-    </Stack>
+    <GestureHandlerRootView>
+      <Drawer drawerContent={(props) => <CustomDrawer {...props} />}>
+        <Drawer.Screen name="index" />
+
+        <Drawer.Screen name="about" />
+      </Drawer>
+    </GestureHandlerRootView>
   );
 }
